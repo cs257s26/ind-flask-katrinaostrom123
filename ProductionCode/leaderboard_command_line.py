@@ -19,7 +19,7 @@ def load_data():
 
     else:
         data = load_individual_data("mammals.csv", data)
-     #if we are in the ProductionCode directory, we need to move up one level to access the data
+    #if we are in the ProductionCode directory, we need to move up one level to access the data
 
     
     # Return for test purposes
@@ -74,8 +74,8 @@ def create_leaderboard(common_name_of_animal, data):
                 username_counts[username] = first_spotting_count
                 username_key_storage.append(username)
 
-
     return print_leaders(username_counts, username_key_storage, total_animal_spotted_count, common_name_of_animal) 
+
 
                 
 def print_leaders(username_counts, username_key_storage, total_animal_spotted_count, common_name_of_animal):
@@ -95,6 +95,8 @@ def print_leaders(username_counts, username_key_storage, total_animal_spotted_co
 
     return username_counts, username_key_storage 
     
+
+
 
 def sort_keys(username_key_storage, username_counts, username)-> list:
     """This function sorts the leaders in the username_storage_list from most to least contributions.
