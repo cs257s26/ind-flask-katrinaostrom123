@@ -10,6 +10,9 @@ else:
     FILENAME = "mammals.csv"
      #if we are in the ProductionCode directory, we need to move up one level to access the data
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+FILENAME = os.path.join(script_dir, "mammals.csv")
+
 data = []
 
 def load_data():
