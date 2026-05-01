@@ -5,9 +5,9 @@ from collections import Counter
 import os
 
 if os.getcwd().endswith("ProductionCode"):
-    FILENAME = "../data/raw/mammals.csv"
+    FILENAME = "mammals.csv"
 else:
-    FILENAME = "data/raw/mammals.csv"
+    FILENAME = "mammals.csv"
      #if we are in the ProductionCode directory, we need to move up one level to access the data
 
 data = []
@@ -36,7 +36,7 @@ def makeRandomLocationList(randomLocationName: str, data)-> list:
     animalsList = [entry[7] for entry in locationList] #10 is the column that contains "place_guess"
     countedAnimalsList = Counter(animalsList) #We get a dictionary of how many times each animal appears in "animalList".
     mostCommon = countedAnimalsList.most_common() #'most_common()'is a funcion from Counter that will give us a sorted list
-    print(mostCommon)
+    #print(mostCommon)
     return mostCommon
 
 def getCorrectAnswers(mostCommon: list) -> tuple[str, str]:
@@ -60,13 +60,12 @@ def game(data):
     top5Animals = top5AnimalsList(mostCommon)
     correctAnswerAnimal, correctAnswerCount = getCorrectAnswers(mostCommon)
 
-    print("Which is the most commonly reported species in ", randomLocationName, "?")
-    print("Choose one: ", ", ".join(animal[0] for animal in top5Animals))
-    userAnswer = input("Type your guess here: ")
-    if correctAnswerAnimal == userAnswer:
-        print("Correct!")
-    else:
-        print("Incorrect, the most commonly reported animal is: ", correctAnswerAnimal, ", reported ", correctAnswerCount, " times.")
+    return {
+        "location": randomLocationName,
+        "options": (animal[0] for animal in top5Animals),
+        "correctAnimal": correctAnswerAnimal,
+        "correctCount": correctAnswerCount
+    }
 
 def main():
     data= load_data()
