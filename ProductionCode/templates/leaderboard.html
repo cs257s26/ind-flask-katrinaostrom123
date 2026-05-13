@@ -6,11 +6,10 @@
     <h1>Leaderboard of {{ animal_name }} sightings</h1>
 
     <table>
-      {% for user in username_key_storage[:100] %}
+      {% for user in result[:100] %}
       <tr>
         <td>{{ loop.index }}.</td>
-        <td><strong>Count:</strong> {{ username_counts[user] }}</td>
-        <td><strong>User:</strong> {{ user }}</td>
+        <td>{{ user }}</td>
       </tr>
       {% endfor %}
     </table>

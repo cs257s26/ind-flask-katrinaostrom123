@@ -1,7 +1,8 @@
-
 from flask import Flask, render_template, request, session
 from command_line import *
 from game_command_line import *
+from datasource import *
+
 app = Flask(__name__)
 
 app.secret_key = "hello"
@@ -10,10 +11,29 @@ app.secret_key = "hello"
 def index():
     return render_template('index.html')
 
+#helper function for game_play()
+def get_randomLocation():
+    connection = connect()
+    randomLocation = get_random_location(connection)
+    randomLocation = randomLocation[0]
+    randomLocation = randomLocation[0] #getting the singular string from the array
+    print(randomLocation)
+    return randomLocation
+
+#another helper function for game_play()
+def top_5Animals(location):
+    connection = connect()
+    return get_top5Animals(connection, location)
+
 @app.route('/game', methods=['GET', 'POST'])
 def game_play():
     result_message = None
-    
+    location = get_randomLocation()
+    listOfTop5Animals= top_5Animals(location)
+    mostCommonAnimal = listOfTop5Animals[0]
+    mostCommonAnimalName = mostCommonAnimal[0]
+    mostCommonAnimalCount = mostCommonAnimal[1]
+
     #submit a guess
     if request.method == 'POST':
         user_guess = request.form.get('guess')
@@ -24,26 +44,20 @@ def game_play():
             result_message = f"Correct! {user_guess} is the most common."
         else:
             result_message = f"Incorrect, the most commonly reported animal is:  {correct_answer} reported  {correct_answer_count} times."
-            
-    #generate a new question
-    data = load_data()
-    current_game = game(data)
-    session['correct_answer'] = current_game['correctAnimal']
-    session['correct_answer_count'] = current_game['correctCount']
-    
-    return render_template('game.html', 
-                           location=current_game['location'], 
-                           options=current_game['options'],
-                           message=result_message)
+        
+    session['correct_answer'] = mostCommonAnimalName
+    session['correct_answer_count'] = mostCommonAnimalCount
 
+    return render_template('game.html', 
+                        location=location, 
+                        options=(animal[0] for animal in listOfTop5Animals),
+                        message=result_message)
 
 @app.route('/leaderboard/<animal_name>')
 def show_leaderboard(animal_name=""):
-    creature_of_interest = animal_name
-    data = load_data()
-    username_counts, username_key_storage = create_leaderboard(creature_of_interest, data)
-    return render_template('leaderboard.html', animal_name=animal_name, username_key_storage=username_key_storage, username_counts=username_counts, max_display=100)    
-    
+    connection = connect()
+    result = get_leaderboard(connection, animal_name)
+    return render_template('leaderboard.html', animal_name=animal_name, result=result, max_display=100)    
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=88, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
