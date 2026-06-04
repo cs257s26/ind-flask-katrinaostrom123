@@ -10,7 +10,6 @@ Type "/leaderboard/animal_name" after the URL to get the leaderboard for a certa
 
 http://127.0.0.1/leaderboard/Coyote 
 
-
 To copy data into database:
 
 `\copy mammals_table FROM 'mammals.csv' DELIMITER ',' CSV`
