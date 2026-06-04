@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, session
 from command_line import *
 from game_command_line import *
-from datasource import *
+
+import sys
+sys.path.insert(0, "../Data")
+
+import datasource
 
 app = Flask(__name__)
 
@@ -13,8 +17,8 @@ def index():
 
 #helper function for game_play()
 def get_randomLocation():
-    connection = connect()
-    randomLocation = get_random_location(connection)
+    connection = datasource.connect()
+    randomLocation = datasource.get_random_location(connection)
     randomLocation = randomLocation[0]
     randomLocation = randomLocation[0] #getting the singular string from the array
     print(randomLocation)
@@ -22,8 +26,8 @@ def get_randomLocation():
 
 #another helper function for game_play()
 def top_5Animals(location):
-    connection = connect()
-    return get_top5Animals(connection, location)
+    connection = datasource.connect()
+    return datasource.get_top5Animals(connection, location)
 
 @app.route('/game', methods=['GET', 'POST'])
 def game_play():
@@ -55,8 +59,8 @@ def game_play():
 
 @app.route('/leaderboard/<animal_name>')
 def show_leaderboard(animal_name=""):
-    connection = connect()
-    result = get_leaderboard(connection, animal_name)
+    connection = datasource.connect()
+    result = datasource.get_leaderboard(connection, animal_name)
     return render_template('leaderboard.html', animal_name=animal_name, result=result, max_display=100)    
 
 if __name__ == '__main__':
