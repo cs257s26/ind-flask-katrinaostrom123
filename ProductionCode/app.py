@@ -60,4 +60,4 @@ def show_leaderboard(animal_name=""):
     return render_template('leaderboard.html', animal_name=animal_name, result=result, max_display=100)    
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', debug=True)
