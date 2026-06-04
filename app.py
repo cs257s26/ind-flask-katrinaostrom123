@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, session
-from command_line import *
-from game_command_line import *
+from ProductionCode import command_line
+from ProductionCode import game_command_line
 
-import sys
-sys.path.insert(0, "../Data")
-
-import datasource
+from Data import datasource
 
 app = Flask(__name__)
 
@@ -31,6 +28,7 @@ def top_5Animals(location):
 
 @app.route('/game', methods=['GET', 'POST'])
 def game_play():
+    '''This route will randomly choose a location and ask the user to guess the top species there'''
     result_message = None
     location = get_randomLocation()
     listOfTop5Animals= top_5Animals(location)
@@ -59,6 +57,7 @@ def game_play():
 
 @app.route('/leaderboard/<animal_name>')
 def show_leaderboard(animal_name=""):
+    """Displays the top 100 contributors for a given animal."""
     connection = datasource.connect()
     result = datasource.get_leaderboard(connection, animal_name)
     return render_template('leaderboard.html', animal_name=animal_name, result=result, max_display=100)    

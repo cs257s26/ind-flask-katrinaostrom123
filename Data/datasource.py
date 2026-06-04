@@ -1,5 +1,5 @@
 import psycopg2 as ps
-import psqlConfig as config
+from . import psqlConfig as config
 
 
 def connect():

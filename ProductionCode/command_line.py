@@ -2,19 +2,19 @@
 import argparse
 import sys
 
-from top_species_command_line import (
+from .top_species_command_line import (
     forward_geocode,
     filter_by_radius,
     top_species_by_taxon,
 )
-from game_command_line import game
+from .game_command_line import game
 
-from top_species_command_line import load_data as load_species_data
-from game_command_line import load_data as load_game_data
+from .top_species_command_line import load_data as load_species_data
+from .game_command_line import load_data as load_game_data
 
-from leaderboard_command_line import load_data as load_leaderboard_data
-from leaderboard_command_line import create_leaderboard
-from leaderboard_command_line import check_for_improper_request
+from .leaderboard_command_line import load_data as load_leaderboard_data
+from .leaderboard_command_line import create_leaderboard
+from .leaderboard_command_line import check_for_improper_request
 
 def cmd_leaderboard(args):
     """Displays the top 100 species-specific contributors to INaturalist in Minnesota for a given animal. 
